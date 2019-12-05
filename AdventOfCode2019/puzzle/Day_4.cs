@@ -8,7 +8,7 @@ namespace AdventOfCode2019.puzzle
     class Day_4
     {
 
-        public static Stack<int> Puzzle1()
+        public static int Puzzle1()
         {
             //It is a six-digit number.
             //The value is within the range given in your puzzle input.
@@ -17,7 +17,7 @@ namespace AdventOfCode2019.puzzle
 
             // range 254032-789860
 
-            int matches;
+            int matches = 0;
 
             for ( int number = 254032; number != 789860; number++)
             {
@@ -25,38 +25,32 @@ namespace AdventOfCode2019.puzzle
                 // if all digits increase and if 2 adjecent digits are the same
                 // then add add 1 to matches.
 
+                var test = CheckAllDigitsIncrease(number);
+                if (test == true)
+                {
+                    matches++;
+                }
 
             }
+            return matches;
 
         }
 
         public static bool CheckAllDigitsIncrease(int number)
         {
-            List<int> digits = GetNumberDigits(number);
-
-            bool increasing;
-
-            for (int i = 0; i <= digits.Count; i++)
             {
-                if (digits[i] < digits[i + 1])
+                string text = number.ToString();
+                char previous = '0';
+
+                foreach (char c in text)
                 {
-                    increasing = true;
+                    if (c <= previous)
+                        return false;
+                    previous = c;
                 }
-                else
-                {
-                    increasing = false;
-                }
-            return increasing;
+
+                return true;
             }
-        }
-
-
-        public static List<int> GetNumberDigits (int number)
-        {
-            var digits = GetNumberDigits(number / 10);
-            digits.Insert(0, number % 10);
-
-            return digits;
         }
     }
 }
