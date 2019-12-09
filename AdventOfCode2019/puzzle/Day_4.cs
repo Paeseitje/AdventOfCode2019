@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode2019.puzzle
 {
@@ -17,43 +17,56 @@ namespace AdventOfCode2019.puzzle
 
             // range 254032-789860
 
-            int matches = 0;
+            List<int> range = Enumerable.Range(122345, 122351).ToList();
+            int n = range.Count();
 
-            for ( int number = 254032; number != 789860; number++)
+            List<int> IncreasingNumbers = CheckAllDigitsInrease(range, n);
+
+            List<int> compliantList = new List<int>();
+
+            foreach (int nmbr in IncreasingNumbers)
             {
-                // check if the number is compliant
-                // if all digits increase and if 2 adjecent digits are the same
-                // then add add 1 to matches.
-
-                var test = CheckAllDigitsIncrease(number);
-                if (test == true)
+                if (HasDoubleDigits(nmbr) == true)
                 {
-                    matches++;
+                    compliantList.Add(nmbr);
                 }
-
             }
+            // count List
+            int matches = compliantList.Count;
             return matches;
-
         }
 
         public static bool HasDoubleDigits (int number)
         {
-            var regex = 
+            String numberToCheck = number.ToString();
+            bool contains = Regex.IsMatch(numberToCheck, @"22");
+
+            return contains;
         }
 
-        public static bool CheckAllDigitsIncrease(int number)
+        public static List<int> CheckAllDigitsInrease (List<int> IntList, int n)
         {
-            string text = number.ToString();
-            char previous = '0';
-
-            foreach (char c in text)
+            List<int> numbers = new List<int>();
+            for (int i = 1; i < n - 1; i++)
             {
-                if (c <= previous)
-                    return false;
-                previous = c;
+                if (IntList[i] < IntList[i - 1])
+                {
+                    numbers.Add(IntList[i]);
+                }
             }
+            return IntList;
+        }
 
-            return true;
+        public static List<int> GetIntList(int num)
+        {
+            List<int> listOfInts = new List<int>();
+            while (num > 0)
+            {
+                listOfInts.Add(num % 10);
+                num /= 10;
+            }
+            listOfInts.Reverse();
+            return listOfInts.ToList();
         }
     }
 }
