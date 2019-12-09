@@ -36,21 +36,24 @@ namespace AdventOfCode2019.puzzle
 
         }
 
+        public static bool HasDoubleDigits (int number)
+        {
+            var regex = 
+        }
+
         public static bool CheckAllDigitsIncrease(int number)
         {
+            string text = number.ToString();
+            char previous = '0';
+
+            foreach (char c in text)
             {
-                string text = number.ToString();
-                char previous = '0';
-
-                foreach (char c in text)
-                {
-                    if (c <= previous)
-                        return false;
-                    previous = c;
-                }
-
-                return true;
+                if (c <= previous)
+                    return false;
+                previous = c;
             }
+
+            return true;
         }
     }
 }
