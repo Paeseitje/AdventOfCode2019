@@ -8,7 +8,7 @@ namespace AdventOfCode2019.puzzle
     {
         public static int Puzzle1()
         {
-            var modules = LoadData.LoadDataAsIntList(1);
+            var modules = LoadData.LoadDataColumnAsIntList(1);
 
             int sum = 0;
 
@@ -23,7 +23,7 @@ namespace AdventOfCode2019.puzzle
 
         public static int Puzzle2()
         {
-            var modules = LoadData.LoadDataAsIntList(1);
+            var modules = LoadData.LoadDataColumnAsIntList(1);
 
             int sum = 0;
 

@@ -14,7 +14,7 @@ namespace AdventOfCode2019.puzzle
         }
 
         // load data as a list<int>
-        protected static List<int> LoadDataAsIntList(int day)
+        protected static List<int> LoadDataColumnAsIntList(int day)
         {
             List<int> input = new List<int>();
             try
@@ -34,7 +34,7 @@ namespace AdventOfCode2019.puzzle
             return input;
         }
 
-        protected static List<int> LoadDataAsIntList_2 (int day)
+        protected static List<int> LoadDataListAsIntList (int day)
         {
             List<int> input = new List<int>();
 
@@ -55,6 +55,28 @@ namespace AdventOfCode2019.puzzle
                 throw e;
             }
             return input;
+        }
+
+        protected static List<List<string>> LoadDataListAsStringListList (int day)
+        {
+            List<List<string>> list = new List<List<string>>();
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(GetPath(day)))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        list.Add(sr.ReadLine().Split(',').ToList());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            return list;
         }
     }
 }

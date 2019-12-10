@@ -9,7 +9,7 @@ namespace AdventOfCode2019.puzzle
     {
         public static int Puzzle1()
         {
-            List<int> input = LoadDataAsIntList_2(2);
+            List<int> input = LoadDataListAsIntList(2);
 
             input[1] = 12;
             input[2] = 2;
@@ -27,7 +27,7 @@ namespace AdventOfCode2019.puzzle
             {
                 Enumerable.Range(0, 99).ToList().ForEach(verb =>
                 {
-                    List<int> input = LoadDataAsIntList_2(2);
+                    List<int> input = LoadDataListAsIntList(2);
                     input[1] = noun;
                     input[2] = verb;
 

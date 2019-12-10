@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode2019.puzzle
@@ -17,56 +18,79 @@ namespace AdventOfCode2019.puzzle
 
             // range 254032-789860
 
-            List<int> range = Enumerable.Range(122345, 122351).ToList();
-            int n = range.Count();
+            IEnumerable<string> possibilities = Enumerable.Range(1, 9).Select(p => p.ToString() + p.ToString());
 
-            List<int> IncreasingNumbers = CheckAllDigitsInrease(range, n);
+            int start = 254032;
+            int end = 789860;
 
-            List<int> compliantList = new List<int>();
+            int matches = 0;
 
-            foreach (int nmbr in IncreasingNumbers)
+            for (int i = start; i < end; i++)
             {
-                if (HasDoubleDigits(nmbr) == true)
+                var iString = i.ToString();
+                if (possibilities.Any(w => iString.Contains(w)))
                 {
-                    compliantList.Add(nmbr);
+                    bool ok = true;
+                    for (int j = 1; j < iString.Length; j++)
+                    {
+                        if (iString[j] < iString[j - 1])
+                        {
+                            ok = false;
+                        }
+                    }
+                    if (!ok)
+                    {
+                        continue;
+                    }
+                    matches++;
                 }
             }
-            // count List
-            int matches = compliantList.Count;
             return matches;
         }
 
-        public static bool HasDoubleDigits (int number)
+        public static int Puzzle2()
         {
-            String numberToCheck = number.ToString();
-            bool contains = Regex.IsMatch(numberToCheck, @"22");
+            // extra rule: repeated digits cannot be part of a larger group of matching digits
+            // so 112233 meets these criteria because the digits never decrease and all repeated digits are exactly two digits long.
+            // 123444 no longer meets the criteria(the repeated 44 is part of a larger group of 444).
+            // 111122 meets the criteria(even though 1 is repeated more than twice, it still contains a double 22).
+            // range 254032-789860
 
-            return contains;
-        }
+            // make a list of numbers (4-digits) that contain 1 double digit in the center e.g. x11x, x22x, x33x, .., x99x, where x != [1] but == [2]
+            IEnumerable<string> allPos = Enumerable.Range(1111, 9999).Select(p => p.ToString()).Where(p => p[0] != p[1] && p[3] != p[1] && p[1] == p[2]);
 
-        public static List<int> CheckAllDigitsInrease (List<int> IntList, int n)
-        {
-            List<int> numbers = new List<int>();
-            for (int i = 1; i < n - 1; i++)
+            int start = 254032;
+            int end = 789860;
+
+            int matches = 0;
+
+            for (int i = start; i < end; i++)
             {
-                if (IntList[i] < IntList[i - 1])
+                var iString = i.ToString();
+
+                // the number can contain a double digit (== number in allPos), can start with the double digit (substring(1) - 223) or can end with the double digit (substring(0,3) - eg 988)
+                // 25566 (ends with double digit)
+                // 255666 (has double digit)
+                // 334444 (begins with double digit)
+                if (allPos.Any(w => iString.Contains(w) || iString.StartsWith(w.Substring(1)) || iString.EndsWith(w.Substring(0, 3))))
                 {
-                    numbers.Add(IntList[i]);
+                    bool ok = true;
+                    for (int j = 1; j < iString.Length; j++)
+                    {
+                        if (iString[j] < iString[j - 1])
+                        {
+                            ok = false;
+                        }
+                    }
+                    if (!ok)
+                    {
+                        continue;
+                    }
+                    Console.WriteLine(i);
+                    matches++;
                 }
             }
-            return IntList;
-        }
-
-        public static List<int> GetIntList(int num)
-        {
-            List<int> listOfInts = new List<int>();
-            while (num > 0)
-            {
-                listOfInts.Add(num % 10);
-                num /= 10;
-            }
-            listOfInts.Reverse();
-            return listOfInts.ToList();
+            return matches;
         }
     }
 }
